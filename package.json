@@ -4,7 +4,7 @@
   "description": "Example",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,12 @@
   "homepage": "https://github.com/dmitrika/static-web-server#readme",
   "dependencies": {
     "mime": "^1.3.4"
+  },
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "fs-extra": "^1.0.0",
+    "mime": "^1.3.4",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
   }
 }
