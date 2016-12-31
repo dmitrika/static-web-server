@@ -28,7 +28,6 @@
         const form = event.target;
         if (!form.file.value) return;
 
-        //  /my/path/file.ext -> /file.ext
         const fileUrl = '/' + form.file.value.replace(/.*[\\\/]/, '');
 
         const xhr = new XMLHttpRequest();
