@@ -39,8 +39,9 @@ module.exports = http.createServer((req, res) => {
   if (req.method === 'DELETE') {
     let filepath = path.join(config.files, filename);
     fs.unlink(filepath, err => {
-      if (err) {
-        throw new Error(err);
+      if (err && err.code === "ENOENT") {
+        res.statusCode = 400;
+        res.end('No such file!');
       } else {
         res.statusCode = 200;
         res.end('File deleted!');

@@ -63,3 +63,46 @@ test('POST returns 200 & file is uploaded', async t => {
   t.is(response.statusCode, 200);
   t.deepEqual(fs.readFileSync(filepath), fs.readFileSync(assertpath))
 });
+
+test('POST returns 409 if file already exists', async t => {
+  const filepath = path.join('files', 'post.txt');
+  fs.writeFileSync(filepath, 'Hello tester');
+
+  const req = request.post(`${host}/post.txt`);
+
+  fs.createReadStream(filepath).pipe(req);
+
+  const response = await req;
+
+  t.is(response.statusCode, 409);
+});
+
+test('POST returns 413 if file is too big', async t => {
+  const filepath = path.join('files', 'big');
+
+  fs.writeFileSync(filepath, new Buffer(1024*1024*30));
+
+  const req = request.post(`${host}/big.txt`);
+
+  fs.createReadStream(filepath).pipe(req);
+
+  const response = await req;
+
+  t.is(response.statusCode, 413);
+});
+
+test('DELETE returns 200 when file deleted', async t => {
+  const filepath = path.join('files', 'delete.txt');
+  fs.writeFileSync(filepath, 'Hello tester');
+
+  const response = await request.delete(`${host}/delete.txt`);
+
+  t.is(response.statusCode, 200);
+  t.false(fs.existsSync(filepath))
+});
+
+test('DELETE returns 400 when file doesnt exist', async t => {
+  const response = await request.delete(`${host}/delete2.txt`);
+
+  t.is(response.statusCode, 400);
+});
